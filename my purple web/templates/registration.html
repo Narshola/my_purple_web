@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Registration</title>
+</head>
+<body>
+    <h1>Registration</h1>
+    <div class="register_div">
+        <form method="POST" action="/registration">
+            <label for="fname">First name:</label>
+            <input type="text" maxlength="25" size="25" name="fname">
+    
+            <label for="lname">Last name:</label>
+            <input type="text" maxlength="25" size="25" name="lname">
+            
+            <label for="age">Age:</label>
+            <input type="number" size="40" min="1" max="100" name="age">
+    
+            <label for="town">Town:</label>
+            <input type="text" maxlength="25" size="25" name="town">
+            
+            <label for="fname">Login:</label>
+            <input type="text" maxlength="25" size="25" name="login">
+    
+            <label for="password">Password:</label>
+            <input type="password" maxlength="25" size="25" name="password">
+    
+            <label for="password_commit">Commit password:</label>
+            <input type="password" maxlength="25" size="25" name="password_commit">
+            
+            <label for="img">Insert the URL of your image here:</label>
+            <input type="text" size="25" name="img">
+    
+            <input class="submit" type="submit" value="Register">
+            <p>{{ error }}</p><br>
+            <nav>
+                <a href="/">Return to main page</a>
+            </nav>
+        </form>
+    </div>
+</body>
+</html>
