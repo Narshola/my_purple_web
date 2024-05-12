@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Chat</title>
+</head>
+<body>
+    <header>
+        <h1>Chat with {{ user_list[0][1] }} {{ user_list[0][2] }}</h1>
+        <nav>
+            <a href="/user">Main page</a>
+            <a href="/users">Users</a>
+            <a class="login_btn" href="/">Log out</a>
+            <span>{{ login }}</span>
+        </nav>
+    </header>
+    <main>
+        <div class="messages_div">
+            {% if msg_list %}
+                {% for msg in msg_list %}
+                    {% if msg[1] %}
+                        <div class="msg_to_user_div">
+                            <p class="msg_user_text">{{ msg[1] }}</p>
+                            <p class="msg_user_date">{{ msg[2][:-10] }}</p>
+                        </div>
+                    {% else %}
+                        <div class="msg_from_user_div">
+                            <p class="msg_user_text">{{ msg[4] }}</p>
+                            <p class="msg_user_date">{{ msg[5][:-10] }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            {% endif %}
+        </div>
+            <form method="POST" action="/chat">
+                <div class="write_message_div">  
+                    <input type="text" name="write_message" cols="50">
+                    <span><button type="submit" name="send_message" class="submit" value="{{ user_list[0][0] }}">Send message</button></span>
+                </div>
+            </form>
+    </main>
+</body>
+</html>

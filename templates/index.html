@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Main page</title>
+</head>
+<body>
+    <header>
+        <h1>Main page</h1>
+        <nav>
+            <a href="/users">Users</a>
+            {% if login %}
+            <a class="login_btn" href="/">Log out</a>
+            <span>{{ login }}</span>
+            {% else %}
+            <a class="login_btn" href="/login">Log in</a>
+            <span>You</span>
+            {% endif %}
+        </nav>
+    </header>
+    <div>
+        {% if user_list %}
+        <img src="{{ user_list[0][5] }}">
+        <p>{{ user_list[0][1] }} {{ user_list[0][2] }}</p>
+        <p>Age: {{ user_list[0][3] }}</p>
+        <p>Town: {{ user_list[0][4] }}</p>
+        {% else %}
+        <h2>**Main stuff**</h2>
+        {% endif %}
+    </div>
+</body>
+</html>
