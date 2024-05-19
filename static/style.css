@@ -17,13 +17,19 @@ h1 {
     color: #dfb40a;
 }
 
-h2, h3 {
+h1, h2, h3 {
     text-align: center;
+}
+
+p, label, span, h2, h3 {
     color: #9129ff;
 }
 
-p, label {
-    color: #9129ff;
+header span {
+    margin-bottom: 30px;
+    padding: 20px;
+    font-size: 30px;
+    color: #dfb40a;
 }
 
 a {
@@ -42,24 +48,11 @@ a:hover {
     border: 2px solid #dfb40a;
 }
 
-.register_div a {
-    justify-content: space-between;
-    /* display: flex; */
-    text-align: center;
-}
-
 img {
     width: 300px;
     height: 300px;
     border: 3px solid #9129ff;
     border-radius: 30px;
-}
-
-header span {
-    margin-bottom: 30px;
-    padding: 20px;
-    font-size: 30px;
-    color: #dfb40a;
 }
 
 .login_btn {
@@ -77,14 +70,16 @@ div {
 }
 
 .register_div {
-    display: flex;
-    text-align: left;
+    display: grid;
+    justify-content: center;
+    /* text-align: left; */
     margin-left: 35%;
     margin-right: 35%;
 }
 
 .register_div nav {
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 .all_users_div {
@@ -110,6 +105,7 @@ div {
 }
 
 .msg_user_text {
+    overflow-wrap: break-word;
     text-align: left;
 }
 
@@ -120,14 +116,19 @@ div {
 }
 
 .write_message_div {
-    justify-content: space-between;
     width: 60%;
     margin-left: 20%;
     margin-right: 20%;
+    margin-top: 0%;
+}
+
+.send_message {
+    margin-left: 0%;
+    margin-right: 0%;
 }
 
 .user_div {
-    text-align: justify;
+    text-align: left;
     display: inline-block;
 }
 
@@ -147,23 +148,12 @@ button:hover {
     border: 2px solid #dfb40a;
 }
 
-.chat_btn {
-    margin-left: 40%;
-    /* text-align: center; */
-}
-
-textarea {
-    background-color: #0c0217;
-    color: #9129ff;
-    border: 3px solid #9129ff;
-    text-align: center;
+form {
+    display: grid;
+    justify-content: center;
 }
 
 input {
-    display: block;
-    /* text-align: center;
-    justify-content: center; */
-    margin-left: 5%;
     font-size: 20px;
     font-family: 'Courier New', Courier, monospace;
     background-color: #0c0217;
@@ -181,10 +171,8 @@ input[type="password"] {
 }
 
 input[type="submit"] {
-    margin-left: 50%;
     margin-top: 5%;
-    margin-bottom: 5%;
-    padding: 3%;
+    padding: 2%;
     font-size: 20px;
     color: #dfb40a;
     background-color: #9129ff;
@@ -196,4 +184,11 @@ input[type="submit"]:hover {
     color: #9129ff;
     background-color: #dfb40a;
     border: 2px solid #dfb40a;
+}
+
+.login {
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-bottom: 5%;
+    margin-top: 5%;
 }

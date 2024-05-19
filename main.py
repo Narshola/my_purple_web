@@ -1,17 +1,19 @@
-from flask import Flask, render_template, request, session
-from encrypt import encrypt, get_form
-from queries import chat_insert, to_chat_insert, login_data
+from flask import Flask, render_template, request, session, redirect
+from encrypt import encrypt
+from get_unread_msg import get_unread_msg
+from get_register_form import  get_form
+from queries import chat_insert, to_chat_insert, login_data, id_data, msg_data
 from dotenv import load_dotenv
+from settings import get_msg_list
 import os
 import db
-import datetime
+from datetime import datetime
 
 
 app = Flask(__name__)
 load_dotenv()
-# print(os.getenv('SECTET_KEY'))
-# app.config["SECRET_KEY"] = os.getenv("SECTET_KEY")
-app.config["SECRET_KEY"] = "jmsehdgkjsrhgjrg"
+app.config["SECRET_KEY"] = os.getenv("KEY")
+
 
 @app.route("/")
 def index():
@@ -20,10 +22,20 @@ def index():
     return render_template('index.html', user_list=None, login=None)
 
 
-@app.route("/user")
+@app.route("/user", methods=["POST", "GET"])
 def user():
     user_list = db.do(login_data, [session['login_']])
-    return render_template('index.html', user_list=user_list, login=session['login_'])
+    msg_notice = db.do('''SELECT * FROM chat WHERE to_user_id=? AND msg_has_seen=FALSE''', [user_list[0][0]])
+    notice_list = get_unread_msg(msg_notice)
+    print(user_list)
+    print("\n")
+    print(msg_notice)
+    if request.method == "POST":
+        session['chat_user'] = request.form.get("chat_btn")
+        msg_list = get_msg_list(session['login_'], session['chat_user'])
+        msg_user_list = db.do(id_data, [session['chat_user']])
+        return render_template("chat.html", user_list=msg_user_list, login=session['login_'], msg_list=msg_list)
+    return render_template('user.html', user_list=user_list, login=session['login_'], notice=notice_list)
 
 
 @app.route("/users", methods=["POST", "GET"])
@@ -34,7 +46,7 @@ def users():
         login_list = db.do(login_data, [session['login_']])
         user_list = db.do(login_data, [session['chat_user']])
         if session['login_'] != None:
-            msg_list = db.do('''SELECT * FROM chat WHERE user_id = ? AND to_user_id = ?''', [login_list[0][0], user_list[0][0]])
+            msg_list = db.do(msg_data, [login_list[0][0], user_list[0][0]])
             return render_template("chat.html", user_list=user_list, login=session['login_'], msg_list=msg_list)
         return render_template("login.html", error="You need to log in")
     return render_template('users.html', users_list=users_list, login=session['login_'])
@@ -44,6 +56,8 @@ def users():
 def registration():
     if request.method == "POST":
         form_dict = get_form(request.values.lists())
+        if not form_dict:
+            return render_template("registration.html", error="an empty input")
         session['login_'] = form_dict['login']
         data = db.do(login_data, [session['login_']])
         if not data:
@@ -52,7 +66,7 @@ def registration():
             else:
                 return render_template("registration.html", error="password")
             data = db.do(login_data, [session['login_']])
-            return render_template("index.html", login=session['login_'], user_list=data)
+            return render_template("user.html", login=session['login_'], user_list=data)
         return render_template("registration.html", error="login is already exist")
     return render_template("registration.html")
 
@@ -67,7 +81,9 @@ def login():
             return render_template("login.html", error="login has not been found")
         else:
             if password == data[0][7]:
-                return render_template("index.html", login=session['login_'], user_list=data)
+                msg_notice = db.do('''SELECT * FROM chat WHERE to_user_id=? AND msg_has_seen=FALSE''', [data[0][0]])
+                notice_list = get_unread_msg(msg_notice)
+                return render_template("user.html", login=session['login_'], user_list=data, notice=notice_list)
             return render_template("login.html", error="uncorrect password")
     return render_template("login.html")
 
@@ -76,17 +92,15 @@ def login():
 def chat():
     login_list = db.do(login_data, [session['login_']])
     user_list = db.do(login_data, [session['chat_user']])
-    msg_list = db.do('''SELECT * FROM chat WHERE user_id = ? AND to_user_id = ?''', [login_list[0][0], user_list[0][0]])
+    msg_list = db.do(msg_data, [login_list[0][0], user_list[0][0]])
     if request.method == "POST":
         text = request.form.get("write_message")
-        msg_datetime = datetime.datetime.now()
+        msg_datetime = datetime.now()
         if len(text) != 0:
-            print('text')
             db.do(chat_insert, [login_list[0][0], user_list[0][0], text, msg_datetime])
             db.do(to_chat_insert, [user_list[0][0], login_list[0][0], text, msg_datetime])
-            msg_list = db.do('''SELECT * FROM chat WHERE user_id = ? AND to_user_id = ?''', [login_list[0][0], user_list[0][0]])
-            # return render_template("chat.html", login=session['login_'], user_list=user_list, msg_list=msg_list)
-        # return render_template("chat.html", login=session['login_'], user_list=user_list, msg_list=msg_list)
+            msg_list = db.do(msg_data, [login_list[0][0], user_list[0][0]])
+            return redirect('/chat')
     return render_template("chat.html", login=session['login_'], user_list=user_list, msg_list=msg_list)
 
 

@@ -9,16 +9,18 @@
 <body>
     <h1>Log in</h1>
     <div class="register_div">
-        <form method="POST" action="/login">
-            <label for="fname">Login:</label>
-            <input type="text" maxlength="25" name="login">
-            
-            <label for="password">Password:</label>
-            <input type="password" maxlength="25" name="password">
-    
-            <input class="submit" type="submit" value="Log in">
-        </form>
-        <p>{{ error }}</p><br>
+        <!-- <div class="in_reg_div"> -->
+            <form method="POST" action="/login">
+                <label for="fname">Login:</label>
+                <input type="text" maxlength="25" name="login">
+                
+                <label for="password">Password:</label>
+                <input type="password" maxlength="25" name="password">
+        
+                <input class="login" type="submit" value="Log in">
+            </form>
+            <span>{{ error }}</span><br>
+        <!-- </div> -->
         <nav>
             <a href="/registration">Register</a>
             <a href="/">Cancel</a>

@@ -19,6 +19,7 @@ CREATE TABLE chat (
     to_user_id         INTEGER  REFERENCES users (id),
     msg_from_user      TEXT,
     msg_from_user_time DATETIME
+    msg_has_seen       BOOLEAN  DEFAULT (FALSE) 
 );
 
 '''
@@ -38,10 +39,12 @@ VALUES
 
 new_insert = '''INSERT INTO users (first_name, last_name, years, town, img, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)'''
 
+msg_data = '''SELECT * FROM chat WHERE user_id = ? AND to_user_id = ?'''
 chat_insert = '''INSERT INTO chat (user_id, to_user_id, msg_user, msg_user_time) VALUES (?, ?, ?, ?)'''
 to_chat_insert = '''INSERT INTO chat (user_id, to_user_id, msg_from_user, msg_from_user_time) VALUES (?, ?, ?, ?)'''
 
 login_data = '''SELECT * FROM users WHERE login = ?'''
+id_data = '''SELECT * FROM users WHERE id = ?'''
 
 drop_users = '''DROP TABLE IF EXISTS users'''
 drop_chat = '''DROP TABLE IF EXISTS chat'''

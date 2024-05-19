@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+        <title>{{ user_list[0][1] }} {{ user_list[0][2] }}</title>
+    </head>
+    <body>
+        <header>
+            <h1>{{ user_list[0][1] }} {{ user_list[0][2] }}</h1>
+            <nav>
+                <a href="/users">Users</a>
+                <a class="login_btn" href="/">Log out</a>
+                <span>{{ login }}</span>
+            </nav>
+        </header>
+        <div>
+            <img src="{{ user_list[0][5] }}">
+            <p>{{ user_list[0][1] }} {{ user_list[0][2] }}</p>
+            <p>Age: {{ user_list[0][3] }}</p>
+            <p>Town: {{ user_list[0][4] }}</p>
+            <h2>Notifications</h2>
+            {% if notice %}
+                {% for n in notice %}
+                    <p>You have unread messages from {{n[1]}}</p>
+                    <form method="POST" action="/user">
+                        <button type="submit" name="chat_btn" class="chat_btn" value="{{ n[0] }}">Chat</button>
+                    </form>
+                {% endfor %}
+            {% else %}
+                <p>There are no notifications</p>
+            {% endif %}
+        </div>
+    </body>
+</html>
