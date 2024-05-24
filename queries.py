@@ -40,8 +40,10 @@ VALUES
 new_insert = '''INSERT INTO users (first_name, last_name, years, town, img, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)'''
 
 msg_data = '''SELECT * FROM chat WHERE user_id = ? AND to_user_id = ?'''
-chat_insert = '''INSERT INTO chat (user_id, to_user_id, msg_user, msg_user_time) VALUES (?, ?, ?, ?)'''
+chat_insert = '''INSERT INTO chat (user_id, to_user_id, msg_user, msg_user_time, msg_has_seen) VALUES (?, ?, ?, ?, TRUE)'''
 to_chat_insert = '''INSERT INTO chat (user_id, to_user_id, msg_from_user, msg_from_user_time) VALUES (?, ?, ?, ?)'''
+get_new_msg = '''SELECT * FROM chat WHERE user_id=? AND msg_has_seen=FALSE'''
+
 
 login_data = '''SELECT * FROM users WHERE login = ?'''
 id_data = '''SELECT * FROM users WHERE id = ?'''

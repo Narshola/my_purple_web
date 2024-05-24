@@ -10,11 +10,12 @@
     <header>
         <h1>Users</h1>
         <nav>
-            <a href="/user">Main page</a>
             {% if login %}
+            <a href="/user">Main page</a>
             <a class="login_btn" href="/">Log out</a>
             <span>{{ login }}</span>
             {% else %}
+            <a href="/">Main page</a>
             <a class="login_btn" href="/login">Log in</a>
             <span>You</span>
             {% endif %}
@@ -29,7 +30,7 @@
             <p>Town: {{ user[4] }}</p>
             <nav>
                 <form method="POST" action="/users">
-                    <button type="submit" name="chat_btn" class="chat_btn" value="{{ user[6] }}">Chat</button>
+                    <button type="submit" name="chat_btn" class="chat_btn" value="{{ user[0] }}">Chat</button>
                 </form>
             </nav>
         </div>
