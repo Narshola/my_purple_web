@@ -4,41 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
-    <title>Registration</title>
+    <title>Регистрация</title>
 </head>
 <body>
-    <h1>Registration</h1>
+    <h1>Регистрация</h1>
     <div class="register_div">
         <form method="POST" action="/registration">
-            <label for="fname">First name:</label>
+            <label for="fname">Имя:</label>
             <input type="text" maxlength="25" name="fname">
     
-            <label for="lname">Last name:</label>
+            <label for="lname">Фамилия:</label>
             <input type="text" maxlength="25" name="lname">
             
-            <label for="age">Age:</label>
+            <label for="age">Возраст:</label>
             <input type="number" size="40" min="1" max="100" name="age">
     
-            <label for="town">Town:</label>
+            <label for="town">Город:</label>
             <input type="text" maxlength="25" name="town">
             
-            <label for="fname">Login:</label>
+            <label for="fname">Логин:</label>
             <input type="text" maxlength="25" name="login">
     
-            <label for="password">Password:</label>
+            <label for="password">Пароль:</label>
             <input type="password" maxlength="25" name="password">
     
-            <label for="password_commit">Commit password:</label>
+            <label for="password_commit">Подтвердите пароль:</label>
             <input type="password" maxlength="25" name="password_commit">
             
-            <label for="img">Insert the URL of your image here:</label>
+            <label for="img">Вставьте сслыку на Ваше изображение:</label>
             <input type="text" name="img">
     
-            <input class="login" type="submit" value="Register">
+            <input class="login" type="submit" value="Регистрация">
             <span>{{ error }}</span><br>
         </form>
         <nav>
-            <a href="/">Cancel</a>
+            <a href="/">Отмена</a>
         </nav>
     </div>
 </body>

@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
-    <title>Users</title>
+    <title>Пользователи</title>
 </head>
 <body>
     <header>
-        <h1>Users</h1>
+        <h1>Пользователи</h1>
         <nav>
             {% if login %}
-            <a href="/user">Main page</a>
-            <a class="login_btn" href="/">Log out</a>
+            <a href="/user">Главная страница</a>
+            <a class="login_btn" href="/">Выйти</a>
             <span>{{ login }}</span>
             {% else %}
-            <a href="/">Main page</a>
-            <a class="login_btn" href="/login">Log in</a>
-            <span>You</span>
+            <a href="/">Главная страница</a>
+            <a class="login_btn" href="/login">Войти</a>
+            <span>Вы</span>
             {% endif %}
         </nav>
     </header>
@@ -26,11 +26,11 @@
         <div class="user_div">
             <img src="{{ user[5] }}">
             <p>{{ user[1] }} {{ user[2] }}</p>
-            <p>Age: {{ user[3] }}</p>
-            <p>Town: {{ user[4] }}</p>
+            <p>Возраст: {{ user[3] }}</p>
+            <p>Город: {{ user[4] }}</p>
             <nav>
                 <form method="POST" action="/users">
-                    <button type="submit" name="chat_btn" class="chat_btn" value="{{ user[0] }}">Chat</button>
+                    <button type="submit" name="chat_btn" class="chat_btn" value="{{ user[0] }}">Чат</button>
                 </form>
             </nav>
         </div>

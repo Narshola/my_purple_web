@@ -55,6 +55,11 @@ img {
     border-radius: 30px;
 }
 
+.notice_img {
+    width: 80px;
+    height: 80px;
+}
+
 .login_btn {
     margin: 20px;
     text-align: right;
@@ -67,6 +72,34 @@ div {
     background: #0c0217;
     border: 2px solid #9129ff;
     border-radius: 20px;
+}
+
+.notice_div {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin-left: 30%;
+    margin-right: 30%;
+    background-color: #28074a;
+}
+
+.user_notice_div {
+    display: flex;
+    margin: 0%;
+    padding: 0%;
+    background-color: #28074a;
+    border: none;
+}
+
+.notice_div button {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.user_notice_div p {
+    margin-left: 10px;
+    place-self: center;
+    color: #dfb40a;
 }
 
 .register_div {
@@ -116,10 +149,11 @@ div {
 }
 
 .write_message_div {
-    width: 60%;
     margin-left: 20%;
     margin-right: 20%;
     margin-top: 0%;
+    padding: 15px;
+    width: 60%;
 }
 
 .send_message {

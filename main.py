@@ -1,52 +1,42 @@
-from flask import Flask, render_template, request, session, redirect
-from encrypt import encrypt
-from get_unread_msg import get_unread_msg
-from get_register_form import  get_form
-from queries import chat_insert, to_chat_insert, login_data, id_data, msg_data, get_new_msg
-from dotenv import load_dotenv
-from settings import get_msg_list, update_msg_list
-import os
-import db
-from datetime import datetime
+from flask import Flask, render_template, redirect, request, session
+from core.functions.get_register_form import get_form
+from core.functions.encrypt import encrypt
+from core.functions.msg import get_msg_list, update_msg_list, get_unread_msg
+from core.utils.settings import settings
+from core.db.queries import login_data, id_data
+import core.db.scripts as db
 
 
 app = Flask(__name__)
-load_dotenv()
-app.config["SECRET_KEY"] = os.getenv("KEY")
+app.config["SECRET_KEY"] = settings.key
 
 
 @app.route("/")
 def index():
-    session['login_'] = None
-    session['chat_user'] = None
-    return render_template('index.html', user_list=None, login=None)
+    session['login'] = None
+    session['chat_id'] = None
+    return render_template('index.html')
 
 
 @app.route("/user", methods=["POST", "GET"])
 def user():
-    user_list = db.do(login_data, [session['login_']])
-    msg_notice = db.do(get_new_msg, [user_list[0][0]])
-    notice_list = get_unread_msg(msg_notice)
+    user_list = db.do(login_data, [session['login']])
+    notice_list = get_unread_msg(user_list[0][0])
     if request.method == "POST":
-        session['chat_user'] = request.form.get("chat_btn")
-        msg_list = get_msg_list(session['login_'], session['chat_user'])
-        msg_user_list = db.do(id_data, [session['chat_user']])
-        return render_template("chat.html", user_list=msg_user_list, login=session['login_'], msg_list=msg_list)
-    return render_template('user.html', user_list=user_list, login=session['login_'], notice=notice_list)
+        session['chat_id'] = request.form.get("chat_btn")
+        return redirect("/chat")
+    return render_template('user.html', user_list=user_list, login=session['login'], notice=notice_list)
 
 
 @app.route("/users", methods=["POST", "GET"])
 def users():
     users_list = db.do('''SELECT * FROM users''')
     if request.method == "POST":
-        session['chat_user'] = request.form.get("chat_btn")
-        login_list = db.do(login_data, [session['login_']])
-        user_list = db.do(id_data, [session['chat_user']])
-        if session['login_'] != None:
-            msg_list = get_msg_list(session['login_'], session['chat_user'])
-            return render_template("chat.html", user_list=user_list, login=session['login_'], msg_list=msg_list)
-        return render_template("login.html", error="You need to log in")
-    return render_template('users.html', users_list=users_list, login=session['login_'])
+        session['chat_id'] = request.form.get("chat_btn")
+        if session['login'] != None:
+            return redirect("/chat")
+        return render_template("login.html", error="Вам нужно войти.")
+    return render_template('users.html', users_list=users_list, login=session['login'])
 
 
 @app.route("/registration", methods=["POST", "GET"])
@@ -54,48 +44,44 @@ def registration():
     if request.method == "POST":
         form_dict = get_form(request.values.lists())
         if not form_dict:
-            return render_template("registration.html", error="an empty input")
-        session['login_'] = form_dict['login']
-        data = db.do(login_data, [session['login_']])
+            return render_template("registration.html", error="Пустое поле ввода.")
+        session['login'] = form_dict['login']
+        data = db.do(login_data, [session['login']])
         if not data:
             if form_dict['password'] == form_dict['password_commit']:
                 db.insert_new(form_dict)
             else:
-                return render_template("registration.html", error="password")
-            data = db.do(login_data, [session['login_']])
-            return render_template("user.html", login=session['login_'], user_list=data)
-        return render_template("registration.html", error="login is already exist")
+                return render_template("registration.html", error="Пароли не совпадают.")
+            return redirect("/user")
+        return render_template("registration.html", error="Логин уже существует.")
     return render_template("registration.html")
 
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        session['login_'] = request.form.get("login")
+        session['login'] = request.form.get("login")
         password = encrypt(request.form.get("password"))
-        data = db.do(login_data, [session['login_']])
+        data = db.do(login_data, [session['login']])
         if not data:
-            return render_template("login.html", error="login has not been found")
+            return render_template("login.html", error="Логин не был найден.")
         else:
             if password == data[0][7]:
-                msg_notice = db.do(get_new_msg, [data[0][0]])
-                notice_list = get_unread_msg(msg_notice)
-                return render_template("user.html", login=session['login_'], user_list=data, notice=notice_list)
-            return render_template("login.html", error="uncorrect password")
+                return redirect("/user")
+            return render_template("login.html", error="Неверный пароль.")
     return render_template("login.html")
 
 
 @app.route("/chat", methods=["POST", "GET"])
 def chat():
-    user_list = db.do(id_data, [session['chat_user']])
-    msg_list = get_msg_list(session['login_'], session['chat_user'])
+    user_list = db.do(id_data, [session['chat_id']])
+    msg_list = get_msg_list(session['login'], session['chat_id'])
     if request.method == "POST":
         text = request.form.get("write_message")
         if len(text) != 0:
-            update_msg_list(session['login_'], session['chat_user'], text)
-            msg_list = get_msg_list(session['login_'], session['chat_user'])
+            update_msg_list(session['login'], session['chat_id'], text)
             return redirect('/chat')
-    return render_template("chat.html", login=session['login_'], user_list=user_list, msg_list=msg_list)
+    return render_template("chat.html", login=session['login'], user_list=user_list, msg_list=msg_list)
 
 
 app.run(debug=True)

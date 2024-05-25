@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
-    <title>Log in</title>
+    <title>Вход</title>
 </head>
 <body>
-    <h1>Log in</h1>
+    <h1>Вход</h1>
     <div class="register_div">
         <!-- <div class="in_reg_div"> -->
             <form method="POST" action="/login">
-                <label for="fname">Login:</label>
+                <label for="fname">Логин:</label>
                 <input type="text" maxlength="25" name="login">
                 
-                <label for="password">Password:</label>
+                <label for="password">Пароль:</label>
                 <input type="password" maxlength="25" name="password">
         
-                <input class="login" type="submit" value="Log in">
+                <input class="login" type="submit" value="Вход">
             </form>
             <span>{{ error }}</span><br>
         <!-- </div> -->
         <nav>
-            <a href="/registration">Register</a>
-            <a href="/">Cancel</a>
+            <a href="/registration">Регистрация</a>
+            <a href="/">Отмена</a>
         </nav>
     </div>
 </body>

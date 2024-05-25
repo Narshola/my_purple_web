@@ -10,8 +10,8 @@
         <header>
             <h1>{{ user_list[0][1] }} {{ user_list[0][2] }}</h1>
             <nav>
-                <a href="/users">Users</a>
-                <a class="login_btn" href="/">Log out</a>
+                <a href="/users">Пользователи</a>
+                <a class="login_btn" href="/">Выйти</a>
                 <span>{{ login }}</span>
             </nav>
         </header>
@@ -19,17 +19,23 @@
             <img src="{{ user_list[0][5] }}">
             <p>{{ user_list[0][1] }} {{ user_list[0][2] }}</p>
             <p>Age: {{ user_list[0][3] }}</p>
-            <p>Town: {{ user_list[0][4] }}</p>
-            <h2>Notifications</h2>
+            <p>Town: {{ user_list[0][4] }}</p><br>
+            <h2>Оповещения</h2>
             {% if notice %}
-                {% for n in notice %}
-                    <p>You have unread messages from {{n[1]}}</p>
+                <p>У Вас есть непрочитанные сообщения от:</p>    
+            {% for n in notice %}
+                <div class="notice_div">
+                    <div class="user_notice_div">
+                        <img class="notice_img" src="{{ n[2] }}">
+                        <p>{{n[1]}}</p>
+                    </div>
                     <form method="POST" action="/user">
                         <button type="submit" name="chat_btn" class="chat_btn" value="{{ n[0] }}">Chat</button>
                     </form>
+                </div>
                 {% endfor %}
             {% else %}
-                <p>There are no notifications</p>
+                <p>Оповещений нет</p>
             {% endif %}
         </div>
     </body>
