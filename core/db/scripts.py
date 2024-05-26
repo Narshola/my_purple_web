@@ -23,8 +23,9 @@ def insert_new(form_dict):
 
 
 if __name__ == "__main__":
-    do('''DROP TABLE IF EXISTS chat''')
-    do('''DROP TABLE IF EXISTS users''')
+    do(queries.drop_users)
     do(queries.create_users)
-    do(queries.create_chat)
     do(queries.insert_users)
+
+    do(queries.drop_chat)
+    do(queries.create_chat)
